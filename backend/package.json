@@ -1,0 +1,9 @@
+{
+  "name": "ws-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "ws": "^8.17.0",
+    "ioredis": "^5.4.1"
+  }
+}
