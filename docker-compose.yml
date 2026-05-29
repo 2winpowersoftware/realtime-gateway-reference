@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - haproxy
+
+  haproxy:
+    image: haproxy:2.9
+    container_name: haproxy-lb
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - ws1
+      - ws2
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+
+  ws1:
+    build: ./backend
+    environment:
+      - SERVER_ID=ws1
+      - REDIS_HOST=redis
+
+  ws2:
+    build: ./backend
+    environment:
+      - SERVER_ID=ws2
+      - REDIS_HOST=redis
